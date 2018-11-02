@@ -1,35 +1,37 @@
-package com.company.employees.model;
+package com.company.employees.dao.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employees {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int empid;
+
+    @NotBlank
     @JsonProperty("first-name")
     private String firstName;
+
     @JsonProperty("last-name")
     private String lastName;
 
-    //private Dept dept;
-
-    //private int deptid;
-
-
-   /* @ManyToOne
-    Dept dept;
-
-    public Dept getDept() {
-        return dept;
-    }
-
-    public void setDept(Dept dept) {
-        this.dept = dept;
-    }*/
+    @JsonProperty("dept-name")
+    @ManyToOne
+    @JoinColumn(name = "deptid", nullable = false)
+    private Dept deptname;
 
     public int getEmpid() {
         return empid;
@@ -53,5 +55,13 @@ public class Employees {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Dept getDeptname() {
+        return deptname;
+    }
+
+    public void setDeptname(Dept deptname) {
+        this.deptname = deptname;
     }
 }
