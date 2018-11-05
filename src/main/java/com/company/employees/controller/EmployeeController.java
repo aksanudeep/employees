@@ -7,21 +7,19 @@ import com.company.employees.intf.EmployeeRequest;
 import com.company.employees.intf.EmployeeRequestValidator;
 import com.company.employees.service.DeptService;
 import com.company.employees.service.EmployeeService;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
-@Slf4j
+
 @RestController
 public class EmployeeController {
-    private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
 
+    private final Logger log = LogManager.getLogger(LoggingController.class);
     @Autowired
     EmployeeService employeeService;
 
@@ -35,35 +33,31 @@ public class EmployeeController {
     DepartmentRequestValidator departmentRequestValidator;
 
     @PostMapping("/employees")
-    Employees create(@Valid @RequestBody EmployeeRequest employeeRequest) {
+    Employees create(@RequestBody EmployeeRequest employeeRequest) {
 
-        log.info("**** Stating Post  Mapping ****");
-        //validate request
-        employeeRequestValidator.validateRequest(employeeRequest);
 
-        //Find Department
-        Dept dept = deptService.findByDept(employeeRequest.getDeptname());
-        Employees employees = new Employees();
-        BeanUtils.copyProperties(employeeRequest, employees);
-        employees.setDeptname(dept);
-        return employeeService.save(employees);
+        return  employeeService.saveRecord(employeeRequest);
         //Success
     }
 
     @GetMapping("/employees")
     Iterable<Employees> read() {
+        log.info("**** Retriving the employees data ****");
         return employeeService.findAll();
+
     }
 
     @PutMapping("/employees")
-    Employees update(@RequestBody Employees employees) {
-        return employeeService.save(employees);
+    Employees update(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.updateRecord(employeeRequest);
+
     }
 
     @DeleteMapping("/employees/{empid}")
-    void delete(@PathVariable Integer empid)
-    {
-        employeeService.deleteById(empid);
+    void delete(@PathVariable Integer empid) {
+        log.debug("A DEBUG Message test to delete");
+        employeeService.deleteRecord(empid);
+        log.info("Deleting the Employyee with empid" + empid);
     }
 
     @GetMapping("/employees/{empid}")
@@ -83,5 +77,4 @@ public class EmployeeController {
         else
             return employeeService.findAll();
     }
-
 }

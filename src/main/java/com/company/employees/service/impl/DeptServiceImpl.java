@@ -5,8 +5,12 @@ import com.company.employees.dao.model.Dept;
 import com.company.employees.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
-@Component
+import javax.transaction.Transactional;
+
+@Service
 public class DeptServiceImpl implements DeptService {
 
     @Autowired
@@ -15,5 +19,15 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public Dept findByDept(String deptname) {
         return departmentRepository.findByDept(deptname);
+    }
+
+    @Override
+    public Dept findByDeptname(String name) {
+        return departmentRepository.findByDept(name);
+    }
+
+    @Override
+    public Iterable<Dept> findAll() {
+        return departmentRepository.findAll();
     }
 }
