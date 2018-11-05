@@ -1,6 +1,9 @@
 package com.company.employees.exceptions;
 
+import com.company.employees.controller.LoggingController;
 import com.company.employees.intf.FieldErrorMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,10 +17,14 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 @RestController
 public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
+    private final Logger log = LogManager.getLogger(LoggingController.class);
 
     @ExceptionHandler(BadRequestException.class)
-    public final ResponseEntity<FieldErrorMessage> handleBadRequestException(BadRequestException ex, WebRequest webRequest){
+    public final ResponseEntity<FieldErrorMessage> handleBadRequestException(BadRequestException ex, WebRequest webRequest) {
+
         FieldErrorMessage fieldErrorMessage = new FieldErrorMessage(LocalDateTime.now(), ex.getMessage(), webRequest.getDescription(false));
+        log.error("Please Find the Exception : " + ex.getMessage());
         return new ResponseEntity<FieldErrorMessage>(fieldErrorMessage, HttpStatus.BAD_REQUEST);
+
     }
 }

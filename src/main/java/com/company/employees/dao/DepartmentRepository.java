@@ -10,5 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface DepartmentRepository extends CrudRepository<Dept, Integer> {
 
     @Query("select d from Dept d where d.name= :name")
-    Dept findByDept(@Param("name") String name );
+    Dept findByDept(@Param("name") String name);
+
+
 }
