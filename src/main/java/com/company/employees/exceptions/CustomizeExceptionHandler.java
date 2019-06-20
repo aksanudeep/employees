@@ -27,6 +27,8 @@ public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<FieldErrorMessage>(fieldErrorMessage, HttpStatus.BAD_REQUEST);
     // This is a test for Brnach
         // This is test 2
+        // This is merge conflits
+
 
     }
 }
