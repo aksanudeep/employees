@@ -25,6 +25,7 @@ public class CustomizeExceptionHandler extends ResponseEntityExceptionHandler {
         FieldErrorMessage fieldErrorMessage = new FieldErrorMessage(LocalDateTime.now(), ex.getMessage(), webRequest.getDescription(false));
         log.error("Please Find the Exception : " + ex.getMessage());
         return new ResponseEntity<FieldErrorMessage>(fieldErrorMessage, HttpStatus.BAD_REQUEST);
+    // This is a test for Brnach
 
     }
 }
